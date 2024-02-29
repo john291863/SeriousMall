@@ -2,10 +2,12 @@ package com.example.seriousMall.service.impl;
 
 import com.example.seriousMall.converter.ProductConverter;
 import com.example.seriousMall.dto.ProductParams;
+import com.example.seriousMall.dto.ProductQueryParams;
 import com.example.seriousMall.model.Product;
 import com.example.seriousMall.repository.ProductRepository;
 import com.example.seriousMall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -22,8 +24,9 @@ public class ProductServiceImpl implements ProductService {
     private ProductConverter productConverter;
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<Product> getAllProducts(ProductQueryParams productQueryParams) {
+        return productRepository.findAll(Sort.by(Sort.Direction.DESC, "lastModifiedDate"));
+//        return productRepository.findAll();
     }
 
     @Override
@@ -58,9 +61,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(ProductParams productParams) {
-        Product product = productConverter.convertDtoToEntity(productParams);
+    public Product updateProduct(ProductParams productParams, Integer productId) {
+        Product product = productRepository.findByProductId(productId);
+
         if (product != null) {
+            product.setProductName(productParams.getProductName());
+            product.setCategory(productParams.getCategory());
+            product.setStock(productParams.getStock());
+            product.setImageUrl(productParams.getImageUrl());
+            product.setDescription(productParams.getDescription());
+            product.setPrice(productParams.getPrice());
+
+            product.setCreatedDate(product.getCreatedDate());
             product.setLastModifiedDate(new Date());
             return productRepository.save(product);
         }
@@ -68,4 +80,10 @@ public class ProductServiceImpl implements ProductService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Override
+    public void deleteProduct(Integer productId) {
+        productRepository.deleteById(productId);
+    }
+
 }

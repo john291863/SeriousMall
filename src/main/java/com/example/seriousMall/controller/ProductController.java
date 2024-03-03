@@ -12,6 +12,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,6 +70,23 @@ public class ProductController {
             System.out.println("??" + pro);
         }
         return ResponseEntity.status(HttpStatus.OK).body(productList);
+    }
+
+    @GetMapping("/showProductByPage")
+    public ResponseEntity<List<Product>> showMarkerController(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "5") Integer pageSize,
+
+            @RequestParam(defaultValue = "createdDate") String orderBy
+            ){
+
+
+        PageRequest pageRequest = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.DESC, orderBy));
+        Page<Product> productPage = productService.findProduct(pageRequest);
+        for (int i = 0; i < productPage.getContent().size(); i++) {
+            System.out.println(productPage.getContent().get(i));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(productPage.getContent());
     }
 
     @GetMapping("/{productId}")

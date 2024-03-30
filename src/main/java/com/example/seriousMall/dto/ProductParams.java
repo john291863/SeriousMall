@@ -8,7 +8,6 @@ import java.util.Date;
 
 @Data
 public class ProductParams {
-
     @NotNull
     private String productName;
     @NotNull

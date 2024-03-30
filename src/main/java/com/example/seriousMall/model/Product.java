@@ -1,11 +1,17 @@
 package com.example.seriousMall.model;
 
 import com.example.seriousMall.constant.ProductCategory;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
-@Data
+import java.util.List;
+
+@Getter
+@Setter
 @Entity
 @Table(name="product")
 public class Product {
@@ -30,4 +36,9 @@ public class Product {
     private Date createdDate;
     @Column(name = "last_modified_date")
     private Date lastModifiedDate;
+
+    @OneToMany
+    @JoinColumn(name="product_pid")
+    private List<ProductPhoto> productPhoto;
+
 }

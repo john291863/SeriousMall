@@ -2,6 +2,7 @@ package com.example.seriousMall.controller;
 
 import com.example.seriousMall.constant.ProductCategory;
 import com.example.seriousMall.dto.ProductParams;
+import com.example.seriousMall.dto.ProductPhotoParam;
 import com.example.seriousMall.dto.ProductQueryParams;
 import com.example.seriousMall.model.Employee;
 import com.example.seriousMall.model.Product;
@@ -113,6 +114,11 @@ public class ProductController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
+    @PostMapping("/createProductPhoto/{productId}")
+    public ResponseEntity<?> createProductPhoto(@RequestBody @Valid MultipartFile[] files, @PathVariable @Valid Integer productId) throws IOException {
+        productService.createProductPhoto(files, productId);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
     @PutMapping("/updateProduct/{productId}")
     public ResponseEntity<Product> updateProduct(@RequestBody @Valid ProductParams productParams,
@@ -131,7 +137,7 @@ public class ProductController {
     @PostMapping("/api/upload/multi")
     @ResponseBody
     public ResponseEntity<?> uploadFileMulti(
-            @RequestParam("files") MultipartFile[] uploadfiles) {
+            @RequestParam("file") MultipartFile[] uploadfiles) {
 
 
         // 取得檔案名稱
@@ -143,7 +149,6 @@ public class ProductController {
         }
 
         try {
-
             saveUploadedFiles(Arrays.asList(uploadfiles));
 
         } catch (IOException e) {
@@ -169,6 +174,8 @@ public class ProductController {
 
 
             byte[] bytes = file.getBytes();
+            String byteConvertToStr = Base64.getEncoder().encodeToString(bytes);
+            System.out.println(byteConvertToStr);
             Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
             Files.write(path, bytes);
         }

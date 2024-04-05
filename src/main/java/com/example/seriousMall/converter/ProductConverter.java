@@ -3,10 +3,7 @@ package com.example.seriousMall.converter;
 import com.example.seriousMall.dto.ProductParams;
 import com.example.seriousMall.model.Product;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
 
 @Component
 public class ProductConverter {
@@ -17,7 +14,7 @@ public class ProductConverter {
     public ProductParams converterEntityToDto(Product product){
         return new ModelMapper().map(product, ProductParams.class);
     }
-    public Product convertDtoToEntity (ProductParams productParams){
-        return new ModelMapper().map(productParams, Product.class);
+    public static <D, T> T convertDtoToEntity (D dto, Class<T> classType){
+        return new ModelMapper().map(dto, classType);
     }
 }

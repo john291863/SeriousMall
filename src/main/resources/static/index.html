@@ -31,7 +31,7 @@
             $.ajax({
                 type: "POST",               //使用POST傳輸,檔案上傳只能用POST
                 enctype: 'multipart/form-data', //將資料加密傳輸 檔案上傳一定要有的屬性
-                url: "/products/api/upload/multi", //要傳輸對應的接口
+                url: "/products/createProductPhoto/2", //要傳輸對應的接口
                 data: data,         //要傳輸的資料,我們將form 內upload打包成data
                 processData: false, //防止jquery將data變成query String
                 contentType: false,
@@ -58,7 +58,7 @@
 </script>
 <body>
     <form method="POST" enctype="multipart/form-data" id="UploadForm">
-        <input type="file" name="files"/><br/>
+        <input type="file" name="files" multiple = "multiple"/><br/>
         <button type="submit" value="Submit" id="btnSubmit"/> 送出</button>
     </form>
 

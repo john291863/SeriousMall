@@ -2,12 +2,9 @@ package com.example.seriousMall.controller;
 
 import com.example.seriousMall.constant.ProductCategory;
 import com.example.seriousMall.dto.ProductParams;
-import com.example.seriousMall.dto.ProductPhotoParam;
 import com.example.seriousMall.dto.ProductQueryParams;
-import com.example.seriousMall.model.Employee;
 import com.example.seriousMall.model.Product;
 import com.example.seriousMall.repository.EmployeeRepository;
-import com.example.seriousMall.repository.ProductRepository;
 import com.example.seriousMall.service.ProductService;
 import io.micrometer.common.util.StringUtils;
 import jakarta.validation.Valid;
@@ -22,10 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
